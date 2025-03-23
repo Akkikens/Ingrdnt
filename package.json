@@ -1,4 +1,3 @@
-
 {
   "name": "Ingrdnt",
   "version": "1.0.0",
@@ -10,15 +9,15 @@
     "web": "expo start --web"
   },
   "dependencies": {
-    "expo": "~49.0.0",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "react-native": "0.72.3",
-    "react-native-web": "~0.19.6",
+    "expo": "^52.0.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "react-native": "0.76.7",
+    "react-native-web": "~0.19.13",
     "@react-navigation/native": "^6.1.6",
     "@react-navigation/stack": "^6.3.16",
-    "react-native-safe-area-context": "4.5.0",
-    "react-native-screens": "~3.22.0",
+    "react-native-safe-area-context": "4.12.0",
+    "react-native-screens": "~4.4.0",
     "firebase": "^10.7.1"
   }
 }
