@@ -1,4 +1,8 @@
 {
   "name": "Ingrdnt",
-  "expo": {}
+  "expo": {
+    "plugins": [
+      "expo-barcode-scanner"
+    ]
+  }
 }

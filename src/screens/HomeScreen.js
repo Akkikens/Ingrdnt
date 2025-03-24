@@ -8,9 +8,9 @@ export default function HomeScreen({ navigation }) {
       <Text style={styles.title}>Welcome to Ingrdnt 🌿</Text>
       <Text style={styles.subtitle}>You’ve successfully logged in!</Text>
 
-      <Button mode="contained" onPress={() => alert('Scanner coming soon')}>
-        Start Scanning
-      </Button>
+      <Button mode="contained" onPress={() => navigation.navigate('Scan')}>
+  Start Scanning
+</Button>
     </View>
   );
 }
