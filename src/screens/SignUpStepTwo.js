@@ -1,43 +1,31 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, KeyboardAvoidingView, Alert } from 'react-native';
-import { TextInput, Button, Text, Checkbox, IconButton } from 'react-native-paper';
+import { View, StyleSheet, Alert } from 'react-native';
+import { Text, TextInput, Button, Checkbox, useTheme } from 'react-native-paper';
 import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 import { auth } from '../firebase/config';
+import { db } from '../firebase/config';
+import { doc, setDoc } from 'firebase/firestore';
 
-export default function SignUpScreen({ navigation }) {
-  const [fname, setFname] = useState('');
-  const [lname, setLname] = useState('');
-  const [email, setEmail] = useState('');
+
+export default function SignUpStepTwo({ route, navigation }) {
+  const { fname, lname, email } = route.params;
+  const { colors } = useTheme();
+
   const [password, setPassword] = useState('');
   const [confirmPass, setConfirmPass] = useState('');
   const [agree, setAgree] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
-  const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
 
   const validate = () => {
     let valid = true;
     const newErrors = {};
 
-    if (!fname.trim()) {
-      newErrors.fname = 'First name is required';
-      valid = false;
-    }
-
-    if (!lname.trim()) {
-      newErrors.lname = 'Last name is required';
-      valid = false;
-    }
-
-    if (!email.includes('@') || !email.includes('.')) {
-      newErrors.email = 'Enter a valid email address';
-      valid = false;
-    }
-
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&^()\-_=+]).{8,}$/;
     if (!passwordRegex.test(password)) {
-      newErrors.password = 'Password must be 8+ chars, with uppercase, lowercase, number & special character';
+      newErrors.password = 'Password must be 8+ chars, w/ upper, lower, number, special char';
       valid = false;
     }
 
@@ -57,61 +45,38 @@ export default function SignUpScreen({ navigation }) {
 
   const handleSignup = async () => {
     if (!validate()) return;
-
     try {
       setLoading(true);
       const userCred = await createUserWithEmailAndPassword(auth, email, password);
       await sendEmailVerification(userCred.user);
-      Alert.alert(
-        'Verify your email',
-        'A verification link has been sent to your email. Please verify before logging in.'
-      );
+
+// Save name & email to Firestore
+await setDoc(doc(db, 'users', userCred.user.uid), {
+  firstName: fname,
+  lastName: lname,
+  email: email,
+  createdAt: new Date()
+});
+
+      Alert.alert('Verify Email', 'A verification email has been sent. Please check your inbox.');
       navigation.navigate('SignIn');
-    } catch (error) {
-      alert(error.message);
+    } catch (err) {
+      Alert.alert('Error', err.message);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <KeyboardAvoidingView behavior="padding" style={styles.container}>
-      <Text style={styles.heading}>Create Account</Text>
-
-      <TextInput
-        label="First Name"
-        value={fname}
-        onChangeText={setFname}
-        style={styles.input}
-        error={!!errors.fname}
-      />
-      {errors.fname && <Text style={styles.error}>{errors.fname}</Text>}
-
-      <TextInput
-        label="Last Name"
-        value={lname}
-        onChangeText={setLname}
-        style={styles.input}
-        error={!!errors.lname}
-      />
-      {errors.lname && <Text style={styles.error}>{errors.lname}</Text>}
-
-      <TextInput
-        label="Email"
-        value={email}
-        onChangeText={setEmail}
-        style={styles.input}
-        keyboardType="email-address"
-        error={!!errors.email}
-      />
-      {errors.email && <Text style={styles.error}>{errors.email}</Text>}
+    <View style={styles.container}>
+      <Text style={styles.title}>Secure your account</Text>
 
       <TextInput
         label="Password"
         value={password}
         onChangeText={setPassword}
-        style={styles.input}
         secureTextEntry={!showPassword}
+        style={styles.input}
         error={!!errors.password}
         right={
           <TextInput.Icon
@@ -126,8 +91,8 @@ export default function SignUpScreen({ navigation }) {
         label="Confirm Password"
         value={confirmPass}
         onChangeText={setConfirmPass}
-        style={styles.input}
         secureTextEntry={!showConfirm}
+        style={styles.input}
         error={!!errors.confirmPass}
         right={
           <TextInput.Icon
@@ -139,11 +104,14 @@ export default function SignUpScreen({ navigation }) {
       {errors.confirmPass && <Text style={styles.error}>{errors.confirmPass}</Text>}
 
       <View style={styles.checkboxContainer}>
-        <Checkbox
-          status={agree ? 'checked' : 'unchecked'}
-          onPress={() => setAgree(!agree)}
-        />
-        <Text onPress={() => setAgree(!agree)} style={styles.agreeText}>
+        <View style={styles.checkboxBox}>
+          <Checkbox
+            status={agree ? 'checked' : 'unchecked'}
+            onPress={() => setAgree(!agree)}
+            color={colors.primary}
+          />
+        </View>
+        <Text onPress={() => setAgree(!agree)} style={styles.checkboxLabel}>
           I agree to the Terms & Conditions
         </Text>
       </View>
@@ -154,33 +122,54 @@ export default function SignUpScreen({ navigation }) {
         onPress={handleSignup}
         loading={loading}
         style={styles.button}
+        contentStyle={{ paddingVertical: 10 }}
       >
-        Sign Up
+        Create Account
       </Button>
-    </KeyboardAvoidingView>
+
+      <Text style={styles.footer}>
+        Already have an account?{' '}
+        <Text style={styles.link} onPress={() => navigation.navigate('SignIn')}>
+          Sign In
+        </Text>
+      </Text>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1, justifyContent: 'center', padding: 20, backgroundColor: '#fff'
+    flex: 1, justifyContent: 'center', padding: 24, backgroundColor: '#f5fff5'
   },
-  heading: {
-    fontSize: 28, fontWeight: 'bold', marginBottom: 20, color: '#2e7d32'
+  title: {
+    fontSize: 26, fontWeight: 'bold', marginBottom: 20, color: '#2e7d32', textAlign: 'center'
   },
   input: {
-    marginBottom: 10, backgroundColor: '#f1f8e9'
+    marginBottom: 12, backgroundColor: '#f1f8e9', borderRadius: 8
   },
   error: {
-    fontSize: 12, color: 'red', marginBottom: 10
-  },
-  button: {
-    marginTop: 20, padding: 8, borderRadius: 8
+    fontSize: 12, color: 'red', marginBottom: 6
   },
   checkboxContainer: {
     flexDirection: 'row', alignItems: 'center', marginTop: 10, marginBottom: 5
   },
-  agreeText: {
-    fontSize: 14, color: '#555'
+  checkboxBox: {
+    borderWidth: 1.5,
+    borderColor: '#2e7d32',
+    borderRadius: 4,
+    overflow: 'hidden',
+    marginRight: 8
+  },
+  checkboxLabel: {
+    fontSize: 14, color: '#4e4e4e'
+  },
+  button: {
+    marginTop: 20, borderRadius: 8
+  },
+  footer: {
+    marginTop: 30, textAlign: 'center', color: '#777'
+  },
+  link: {
+    color: '#2e7d32', fontWeight: 'bold'
   }
 });

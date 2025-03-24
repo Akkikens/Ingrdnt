@@ -35,7 +35,7 @@ export default function SignInScreen({ navigation }) {
     try {
       setLoading(true);
       await signInWithEmailAndPassword(auth, email, password);
-      navigation.navigate('Home'); // or your dashboard
+      navigation.navigate('Home')
     } catch (error) {
       Alert.alert('Sign In Failed', error.message);
     } finally {
