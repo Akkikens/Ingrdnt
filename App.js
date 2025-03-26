@@ -9,6 +9,7 @@ import HomeScreen from './src/screens/HomeScreen';
 import { PaperProvider } from 'react-native-paper';
 import { theme } from './src/theme/theme';
 import ScanScreen from './src/screens/ScanScreen';
+import ResultScreen from './src/screens/ResultScreen';
 
 const Stack = createStackNavigator();
 
@@ -23,6 +24,7 @@ export default function App() {
           <Stack.Screen name="SignIn" component={SignInScreen} />
           <Stack.Screen name="Home" component={HomeScreen} />  
           <Stack.Screen name="Scan" component={ScanScreen} />
+          <Stack.Screen name="Result" component={ResultScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </PaperProvider>

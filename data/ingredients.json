@@ -1,0 +1,80 @@
+{
+  "aspartame": {
+    "type": "artificial_sweetener",
+    "harmful": true,
+    "reason": "Linked to migraines and neurological issues"
+  },
+  "sodium benzoate": {
+    "type": "preservative",
+    "harmful": true,
+    "reason": "Potential allergen; can form benzene with vitamin C"
+  },
+  "sodium lauryl sulfate": {
+    "type": "surfactant",
+    "harmful": true,
+    "reason": "May cause skin irritation and dryness"
+  },
+  "parabens": {
+    "type": "preservative",
+    "harmful": true,
+    "reason": "Possible endocrine disruptor"
+  },
+  "zinc pyrithione": {
+    "type": "cosmetic_preservative",
+    "harmful": true,
+    "reason": "Linked to skin sensitivity and environmental toxicity"
+  },
+  "ammonia": {
+    "type": "chemical",
+    "harmful": true,
+    "reason": "Can irritate respiratory system and skin"
+  },
+  "sorbitol": {
+    "type": "sweetener",
+    "harmful": true,
+    "reason": "Excess may cause bloating or laxative effects"
+  },
+  "sucralose": {
+    "type": "artificial_sweetener",
+    "harmful": true,
+    "reason": "May negatively impact gut microbiota"
+  },
+  "fiber": {
+    "type": "nutrient",
+    "harmful": false,
+    "beneficial": true,
+    "reason": "Improves digestion and blood sugar control"
+  },
+  "protein": {
+    "type": "nutrient",
+    "harmful": false,
+    "beneficial": true,
+    "reason": "Essential for muscle repair and growth"
+  },
+  "vitamin c": {
+    "type": "antioxidant",
+    "harmful": false,
+    "beneficial": true,
+    "reason": "Boosts immunity and reduces oxidative stress"
+  },
+  "xylitol": {
+    "type": "sweetener",
+    "harmful": true,
+    "reason": "Toxic to pets and may cause digestive issues"
+  },
+  "fructose": {
+    "type": "sugar",
+    "harmful": true,
+    "reason": "Linked to insulin resistance and fatty liver"
+  },
+  "gluten": {
+    "type": "protein",
+    "harmful": true,
+    "reason": "Problematic for celiac and gluten-sensitive individuals"
+  },
+  "carrageenan": {
+    "type": "thickener",
+    "harmful": true,
+    "reason": "Linked to inflammation and digestive issues"
+  }
+}

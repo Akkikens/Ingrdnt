@@ -1,0 +1,14 @@
+diff --git a/node_modules/expo-modules-core/react-native.config.js b/node_modules/expo-modules-core/react-native.config.js
+index 3b7914e..f02beb7 100644
+--- a/node_modules/expo-modules-core/react-native.config.js
++++ b/node_modules/expo-modules-core/react-native.config.js
+@@ -1,9 +1,5 @@
+ // Explicitly turn off react-native autolinking for this module
+ module.exports = {
+   dependency: {
+-    platforms: {
+-      ios: null,
+-      android: null,
+-    },
+   },
+ };

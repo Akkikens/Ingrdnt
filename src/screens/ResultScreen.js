@@ -1,89 +1,164 @@
 // File: src/screens/ResultScreen.js
+
 import React, { useEffect, useState } from 'react';
-import { View, ScrollView, StyleSheet, Alert } from 'react-native';
-import { Text, Card, Chip, Divider, Button } from 'react-native-paper';
+import {
+  View,
+  Text,
+  Image,
+  ScrollView,
+  StyleSheet,
+  ActivityIndicator,
+  TouchableOpacity
+} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { analyzeIngredients } from '../utils/ingredientChecker';
 import { getAlternatives } from '../utils/alternatives';
-import { auth, db } from '../firebase/config';
-import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { saveScanToHistory } from '../utils/firestore';
+import { AntDesign } from '@expo/vector-icons';
 
-export default function ResultScreen({ route, navigation }) {
+export default function ResultScreen({ route }) {
   const { product } = route.params;
-  const [analysis, setAnalysis] = useState([]);
+  const [flaggedIngredients, setFlaggedIngredients] = useState([]);
   const [alternatives, setAlternatives] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const navigation = useNavigation();
 
   useEffect(() => {
-    if (product.ingredients_text) {
-      const result = analyzeIngredients(product.ingredients_text);
-      setAnalysis(result);
-      setAlternatives(getAlternatives(product.product_name));
-      saveToHistory(result);
-    } else {
-      Alert.alert('No Ingredients', 'No ingredients found for this product.');
-    }
-  }, []);
+    const analyze = async () => {
+      try {
+        const analyzed = await analyzeIngredients(product.ingredients_text_en);
+        const alts = await getAlternatives(product.product_name, product.categories_tags?.[0] || '');
+        setFlaggedIngredients(analyzed);
+        setAlternatives(alts);
 
-  const saveToHistory = async (results) => {
-    try {
-      const user = auth.currentUser;
-      if (!user) return;
-      const historyRef = doc(db, 'users', user.uid, 'scans', product._id);
-      await setDoc(historyRef, {
-        product_name: product.product_name,
-        ingredients_text: product.ingredients_text,
-        results,
-        createdAt: serverTimestamp()
-      });
-    } catch (err) {
-      console.log('Failed to save history:', err);
-    }
-  };
+        await saveScanToHistory({
+          barcode: product.code,
+          name: product.product_name,
+          image: product.image_url,
+          scannedAt: new Date().toISOString(),
+        });
+      } catch (e) {
+        console.error('Error in analysis or saving:', e);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    analyze();
+  }, [product]);
+
+  if (loading) {
+    return (
+      <View style={styles.centered}>
+        <ActivityIndicator size="large" color="#4CAF50" />
+        <Text style={styles.loadingText}>Analyzing product...</Text>
+      </View>
+    );
+  }
 
   return (
-    <ScrollView style={styles.container}>
-      <Card style={styles.card}>
-        <Card.Title title={product.product_name || 'Unknown Product'} />
-        <Card.Content>
-          <Text style={styles.label}>Ingredients:</Text>
-          <Text style={styles.value}>{product.ingredients_text || 'N/A'}</Text>
-          <Divider style={{ marginVertical: 10 }} />
+    <ScrollView contentContainerStyle={styles.container}>
+      <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
+        <AntDesign name="arrowleft" size={24} color="#333" />
+      </TouchableOpacity>
 
-          <Text style={styles.label}>Analysis:</Text>
-          {analysis.map((item, index) => (
-            <Chip
-              key={index}
-              style={item.harmful ? styles.bad : styles.good}
-              textStyle={{ color: '#fff' }}
-            >
-              {item.name} - {item.harmful ? 'Harmful' : 'Healthy'}
-            </Chip>
-          ))}
+      <Image source={{ uri: product.image_url }} style={styles.productImage} />
+      <Text style={styles.productName}>{product.product_name}</Text>
 
-          {alternatives.length > 0 && (
-            <View style={{ marginTop: 20 }}>
-              <Text style={styles.label}>Suggested Alternatives:</Text>
-              {alternatives.map((alt, i) => (
-                <Text key={i} style={styles.alt}>{`• ${alt}`}</Text>
-              ))}
-            </View>
-          )}
-        </Card.Content>
-      </Card>
+      <Text style={styles.sectionTitle}>⚠️ Flagged Ingredients</Text>
+      {flaggedIngredients.length > 0 ? (
+        flaggedIngredients.map((item, index) => (
+          <View key={index} style={styles.ingredientCard}>
+            <Text style={styles.ingredientName}>{item.name}</Text>
+            <Text style={styles.ingredientImpact}>{item.impact}</Text>
+          </View>
+        ))
+      ) : (
+        <Text style={styles.safeText}>✅ No harmful ingredients flagged</Text>
+      )}
 
-      <Button mode="outlined" onPress={() => navigation.goBack()} style={styles.backBtn}>
-        Scan Another Product
-      </Button>
+      <Text style={styles.sectionTitle}>💡 Healthier Alternatives</Text>
+      {alternatives.length > 0 ? (
+        alternatives.map((alt, index) => (
+          <Text key={index} style={styles.altText}>• {alt}</Text>
+        ))
+      ) : (
+        <Text style={styles.altText}>No alternatives found.</Text>
+      )}
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16 },
-  card: { marginVertical: 10 },
-  label: { fontSize: 16, fontWeight: 'bold', marginBottom: 6 },
-  value: { fontSize: 14, color: '#444' },
-  good: { backgroundColor: '#66bb6a', margin: 4 },
-  bad: { backgroundColor: '#ef5350', margin: 4 },
-  alt: { fontSize: 14, marginTop: 4 },
-  backBtn: { marginTop: 20 }
+  container: {
+    padding: 16,
+    paddingTop: 40,
+    backgroundColor: '#F8FAF5',
+    minHeight: '100%'
+  },
+  centered: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff'
+  },
+  loadingText: {
+    marginTop: 12,
+    fontSize: 16,
+    color: '#555'
+  },
+  backBtn: {
+    position: 'absolute',
+    top: 40,
+    left: 16,
+    zIndex: 10,
+    backgroundColor: '#E8F5E9',
+    padding: 8,
+    borderRadius: 50,
+  },
+  productImage: {
+    width: '100%',
+    height: 240,
+    borderRadius: 16,
+    resizeMode: 'cover',
+    marginBottom: 16,
+  },
+  productName: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    marginBottom: 12,
+    color: '#2E7D32',
+    textAlign: 'center'
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    marginVertical: 10,
+    color: '#4CAF50',
+  },
+  ingredientCard: {
+    backgroundColor: '#FFF3E0',
+    padding: 12,
+    borderRadius: 8,
+    marginBottom: 10,
+  },
+  ingredientName: {
+    fontWeight: 'bold',
+    fontSize: 16,
+    color: '#BF360C'
+  },
+  ingredientImpact: {
+    color: '#6D4C41',
+    fontSize: 14,
+    marginTop: 4
+  },
+  safeText: {
+    fontSize: 16,
+    color: '#388E3C'
+  },
+  altText: {
+    fontSize: 15,
+    marginVertical: 4,
+    color: '#424242'
+  }
 });
