@@ -31,17 +31,22 @@ export default function SignInScreen({ navigation }) {
 
   const handleSignIn = async () => {
     if (!validate()) return;
-
+  
     try {
       setLoading(true);
       await signInWithEmailAndPassword(auth, email, password);
-      navigation.navigate('Home')
+  
+      // ✅ Navigate to the HomeTabs after login
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'HomeTabs' }],
+      });      
     } catch (error) {
       Alert.alert('Sign In Failed', error.message);
     } finally {
       setLoading(false);
     }
-  };
+  };  
 
   return (
     <KeyboardAvoidingView behavior="padding" style={styles.container}>
@@ -82,9 +87,9 @@ export default function SignInScreen({ navigation }) {
         Sign In
       </Button>
 
-      <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
-        <Text style={styles.linkText}>Don’t have an account? Sign up</Text>
-      </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('SignUpStepOne')}>
+  <Text style={styles.linkText}>Don’t have an account? Sign up</Text>
+</TouchableOpacity>
     </KeyboardAvoidingView>
   );
 }
