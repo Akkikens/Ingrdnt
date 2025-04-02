@@ -5,7 +5,8 @@ import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/
 import { auth } from '../firebase/config';
 import { db } from '../firebase/config';
 import { doc, setDoc } from 'firebase/firestore';
-
+import Toast from 'react-native-toast-message';
+import { CommonActions } from '@react-navigation/native'; // for animated reset nav
 
 export default function SignUpStepTwo({ route, navigation }) {
   const { fname, lname, email } = route.params;
@@ -25,7 +26,7 @@ export default function SignUpStepTwo({ route, navigation }) {
 
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&^()\-_=+]).{8,}$/;
     if (!passwordRegex.test(password)) {
-      newErrors.password = 'Password must be 8+ chars, w/ upper, lower, number, special char';
+      newErrors.password = 'Password must be 8+ chars w/ upper, lower, number, symbol';
       valid = false;
     }
 
@@ -45,28 +46,49 @@ export default function SignUpStepTwo({ route, navigation }) {
 
   const handleSignup = async () => {
     if (!validate()) return;
+  
     try {
       setLoading(true);
+  
       const userCred = await createUserWithEmailAndPassword(auth, email, password);
       await sendEmailVerification(userCred.user);
-
-// Save name & email to Firestore
-await setDoc(doc(db, 'users', userCred.user.uid), {
-  firstName: fname,
-  lastName: lname,
-  email: email,
-  createdAt: new Date()
-});
-
-      Alert.alert('Verify Email', 'A verification email has been sent. Please check your inbox.');
-      navigation.navigate('SignIn');
+  
+      await setDoc(doc(db, 'users', userCred.user.uid), {
+        firstName: fname,
+        lastName: lname,
+        email: email,
+        createdAt: new Date(),
+      });
+  
+      // ✅ Show success toast
+      Toast.show({
+        type: 'success',
+        text1: 'Account created! 🎉',
+        text2: 'Please verify your email and then sign in.',
+        position: 'top',
+        visibilityTime: 2000,
+      });
+  
+      // ✅ Delay and then navigate to SignIn
+      setTimeout(() => {
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'SignIn' }],
+        });
+      }, 2000); // Give the user time to see the message
+  
     } catch (err) {
-      Alert.alert('Error', err.message);
+      Toast.show({
+        type: 'error',
+        text1: 'Signup Failed',
+        text2: err.message,
+        position: 'top',
+      });
     } finally {
-      setLoading(false);
+      setLoading(false); // ✅ Stops spinner and re-enables button
     }
   };
-
+  
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Secure your account</Text>
@@ -118,14 +140,15 @@ await setDoc(doc(db, 'users', userCred.user.uid), {
       {errors.agree && <Text style={styles.error}>{errors.agree}</Text>}
 
       <Button
-        mode="contained"
-        onPress={handleSignup}
-        loading={loading}
-        style={styles.button}
-        contentStyle={{ paddingVertical: 10 }}
-      >
-        Create Account
-      </Button>
+  mode="contained"
+  onPress={handleSignup}
+  loading={loading}
+  disabled={loading}
+  style={styles.button}
+  contentStyle={{ paddingVertical: 10 }}
+>
+  Create Account
+</Button>
 
       <Text style={styles.footer}>
         Already have an account?{' '}

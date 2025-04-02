@@ -3,6 +3,7 @@ import { View, StyleSheet, KeyboardAvoidingView, TouchableOpacity, Alert } from 
 import { TextInput, Button, Text } from 'react-native-paper';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase/config';
+import { sendEmailVerification } from 'firebase/auth';
 
 export default function SignInScreen({ navigation }) {
   const [email, setEmail] = useState('');
@@ -34,7 +35,32 @@ export default function SignInScreen({ navigation }) {
   
     try {
       setLoading(true);
-      await signInWithEmailAndPassword(auth, email, password);
+      const userCred = await signInWithEmailAndPassword(auth, email, password);
+  
+      if (!userCred.user.emailVerified) {
+        Alert.alert(
+          'Email Not Verified',
+          'Please verify your email before signing in.',
+          [
+            {
+              text: 'Resend Email',
+              onPress: async () => {
+                try {
+                  await sendEmailVerification(userCred.user);
+                  Alert.alert('Verification Sent', 'Check your inbox again!');
+                } catch (err) {
+                  Alert.alert('Error', err.message);
+                }
+              }
+            },
+            {
+              text: 'OK',
+              style: 'cancel'
+            }
+          ]
+        );
+        return;
+      }
   
       // ✅ Navigate to the HomeTabs after login
       navigation.reset({
@@ -46,7 +72,7 @@ export default function SignInScreen({ navigation }) {
     } finally {
       setLoading(false);
     }
-  };  
+  };   
 
   return (
     <KeyboardAvoidingView behavior="padding" style={styles.container}>

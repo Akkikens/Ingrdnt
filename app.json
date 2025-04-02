@@ -4,6 +4,9 @@
     "slug": "ingrdnt",
     "version": "1.0.0",
     "sdkVersion": "52.0.0",
+    "experiments": {
+      "newArchEnabled": true
+    },
     "platforms": ["ios", "android"],
     "ios": {
       "infoPlist": {

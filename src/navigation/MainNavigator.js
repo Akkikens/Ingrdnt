@@ -5,7 +5,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
-
 import ScanScreen from '../screens/ScanScreen';
 import ResultScreen from '../screens/ResultScreen';
 import HistoryScreen from '../screens/HistoryScreen';
@@ -15,25 +14,25 @@ import SignUpStepOne from '../screens/SignUpStepOne';
 import SignUpStepTwo from '../screens/SignUpStepTwo';
 import WelcomeScreen from '../screens/WelcomeScreen';
 import AuthIntroScreen from '../screens/AuthIntroScreen';
-
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebase/config';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
+const iconMap = {
+  Home: 'home',
+  Scan: 'barcode',
+  History: 'time',
+};
 
 const Tabs = () => (
   <Tab.Navigator
     screenOptions={({ route }) => ({
       tabBarIcon: ({ color, size }) => {
-        const iconName =
-          route.name === 'Home'
-            ? 'home'
-            : route.name === 'Scan'
-            ? 'barcode'
-            : 'time';
+        const iconName = iconMap[route.name] || 'alert-circle-outline';
         return <Ionicons name={iconName} size={size} color={color} />;
-      },
+      }
+      ,
       tabBarActiveTintColor: '#4caf50',
       tabBarInactiveTintColor: 'gray',
     })}
@@ -51,11 +50,15 @@ export default function MainNavigator() {
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (usr) => {
-      setUser(usr);
+      if (usr && usr.emailVerified) {
+        setUser(usr);
+      } else {
+        setUser(null);
+      }
       setLoading(false);
     });
     return unsub;
-  }, []);
+  }, []);  
 
   if (loading) return null;
 
