@@ -45,3 +45,5 @@ npm install
 ```bash
 npx expo start
 ```
+
+5. Run on your device:
