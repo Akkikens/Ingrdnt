@@ -67,3 +67,5 @@ Ingrdnt/
 
 ### WelcomeScreen
 First screen users see with app introduction
+
+### AuthIntroScreen
