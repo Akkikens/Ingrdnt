@@ -73,3 +73,5 @@ Choose between sign in and sign up
 
 ### SignInScreen
 User authentication with email/password
+
+### HomeScreen
