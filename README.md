@@ -61,3 +61,4 @@ Ingrdnt/
 ├── assets/          # Images and static files
 ├── data/            # JSON data files
 └── App.js           # Entry point
+```
