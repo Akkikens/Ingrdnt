@@ -180,3 +180,5 @@ git clone https://github.com/yourusername/Ingrdnt.git
 ```bash
 cd Ingrdnt
 ```
+
+3. Install dependencies:
