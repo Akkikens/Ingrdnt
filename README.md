@@ -227,3 +227,5 @@ Camera interface for scanning ingredient labels
 
 ### ResultScreen
 Display analysis results and alternatives
+
+### HistoryScreen
