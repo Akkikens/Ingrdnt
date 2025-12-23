@@ -200,3 +200,4 @@ npx expo start
 Ingrdnt/
 ├── src/
 │   ├── screens/      # App screens
+│   ├── navigation/   # Navigation setup
