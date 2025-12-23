@@ -203,3 +203,4 @@ Ingrdnt/
 │   ├── navigation/   # Navigation setup
 │   ├── theme/        # Theme configuration
 │   └── utils/        # Utility functions
+├── assets/          # Images and static files
