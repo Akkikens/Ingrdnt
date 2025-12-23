@@ -245,3 +245,4 @@ For harmful ingredients, the app suggests healthier alternatives with similar pr
 ## Configuration
 
 ### Firebase Setup
+1. Create a Firebase project at https://console.firebase.google.com
