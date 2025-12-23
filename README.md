@@ -260,3 +260,5 @@ npx expo start --ios
 ```bash
 npx expo start --android
 ```
+
+### Building for Production
