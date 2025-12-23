@@ -172,3 +172,4 @@ Ingrdnt is a React Native mobile application that helps users make informed deci
 ### Setup
 
 1. Clone the repository:
+```bash
