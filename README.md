@@ -163,3 +163,5 @@ Ingrdnt is a React Native mobile application that helps users make informed deci
 - **React Navigation** - Navigation library
 
 ## Installation
+
+### Prerequisites
