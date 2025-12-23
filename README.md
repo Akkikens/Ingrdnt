@@ -234,3 +234,4 @@ View past scans and their results
 ## Key Features Explained
 
 ### Ingredient Scanning
+Users can take photos of ingredient labels, and the app processes them to extract ingredient information.
