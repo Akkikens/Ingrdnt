@@ -327,3 +327,6 @@ cd Ingrdnt
 ```
 
 3. Install dependencies:
+```bash
+npm install
+```
