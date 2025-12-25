@@ -371,3 +371,4 @@ Main dashboard with scan option
 Camera interface for scanning ingredient labels
 
 ### ResultScreen
+Display analysis results and alternatives
