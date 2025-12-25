@@ -356,3 +356,4 @@ Ingrdnt/
 ## Screens
 
 ### WelcomeScreen
+First screen users see with app introduction
