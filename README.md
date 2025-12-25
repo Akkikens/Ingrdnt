@@ -320,3 +320,5 @@ Ingrdnt is a React Native mobile application that helps users make informed deci
 ```bash
 git clone https://github.com/yourusername/Ingrdnt.git
 ```
+
+2. Navigate to the project directory:
