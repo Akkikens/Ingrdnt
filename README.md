@@ -292,3 +292,5 @@ For questions or feedback, please open an issue on GitHub.
 Made with ❤️ for healthier living
 ## Overview
 Ingrdnt is a React Native mobile application that helps users make informed decisions about food ingredients.
+
+## Features
