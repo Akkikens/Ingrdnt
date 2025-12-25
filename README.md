@@ -344,3 +344,4 @@ npx expo start
 ```
 Ingrdnt/
 ├── src/
+│   ├── screens/      # App screens
