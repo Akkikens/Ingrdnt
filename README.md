@@ -341,3 +341,4 @@ npx expo start
 - Scan the QR code from your terminal
 
 ## Project Structure
+```
