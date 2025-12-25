@@ -354,3 +354,5 @@ Ingrdnt/
 ```
 
 ## Screens
+
+### WelcomeScreen
