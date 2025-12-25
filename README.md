@@ -375,3 +375,5 @@ Display analysis results and alternatives
 
 ### HistoryScreen
 View past scans and their results
+
+## Key Features Explained
