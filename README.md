@@ -315,3 +315,5 @@ Ingrdnt is a React Native mobile application that helps users make informed deci
 - Expo CLI
 
 ### Setup
+
+1. Clone the repository:
