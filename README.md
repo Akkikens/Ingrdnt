@@ -400,3 +400,5 @@ For harmful ingredients, the app suggests healthier alternatives with similar pr
 ```bash
 npx expo start --ios
 ```
+
+### Running on Android
