@@ -322,3 +322,6 @@ git clone https://github.com/yourusername/Ingrdnt.git
 ```
 
 2. Navigate to the project directory:
+```bash
+cd Ingrdnt
+```
