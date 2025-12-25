@@ -411,3 +411,5 @@ npx expo start --android
 npx expo build:android
 npx expo build:ios
 ```
+
+## Contributing
