@@ -469,3 +469,5 @@ Made with ❤️ for healthier living
 <!-- PR #16 -->
 
 <!-- PR #17 -->
+
+<!-- PR #18 -->
