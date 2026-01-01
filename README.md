@@ -499,3 +499,5 @@ Made with ❤️ for healthier living
 <!-- Commit 8: perf: improve performance -->
 
 <!-- Commit 9: ci: update CI configuration -->
+
+<!-- Commit 10: build: update build scripts -->
