@@ -487,3 +487,5 @@ Made with ❤️ for healthier living
 <!-- Commit 2: docs: improve code documentation -->
 
 <!-- Commit 3: refactor: optimize code structure -->
+
+<!-- Commit 4: style: format code consistently -->
