@@ -483,3 +483,5 @@ Made with ❤️ for healthier living
 <!-- PR #26 -->
 
 <!-- Commit 1: chore: update project dependencies -->
+
+<!-- Commit 2: docs: improve code documentation -->
