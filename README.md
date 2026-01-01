@@ -489,3 +489,5 @@ Made with ❤️ for healthier living
 <!-- Commit 3: refactor: optimize code structure -->
 
 <!-- Commit 4: style: format code consistently -->
+
+<!-- Commit 5: test: add unit tests -->
