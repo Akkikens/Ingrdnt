@@ -491,3 +491,5 @@ Made with ❤️ for healthier living
 <!-- Commit 4: style: format code consistently -->
 
 <!-- Commit 5: test: add unit tests -->
+
+<!-- Commit 6: feat: add new feature -->
