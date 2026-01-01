@@ -509,3 +509,5 @@ Made with ❤️ for healthier living
 <!-- Commit 13: chore: clean up unused files -->
 
 <!-- Commit 14: feat: enhance user experience -->
+
+<!-- Commit 15: fix: correct typo in comments -->
