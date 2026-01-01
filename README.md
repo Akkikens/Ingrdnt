@@ -493,3 +493,5 @@ Made with ❤️ for healthier living
 <!-- Commit 5: test: add unit tests -->
 
 <!-- Commit 6: feat: add new feature -->
+
+<!-- Commit 7: fix: resolve bug issue -->
