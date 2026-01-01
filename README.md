@@ -507,3 +507,5 @@ Made with ❤️ for healthier living
 <!-- Commit 12: refactor: simplify code logic -->
 
 <!-- Commit 13: chore: clean up unused files -->
+
+<!-- Commit 14: feat: enhance user experience -->
