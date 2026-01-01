@@ -505,3 +505,5 @@ Made with ❤️ for healthier living
 <!-- Commit 11: docs: update API documentation -->
 
 <!-- Commit 12: refactor: simplify code logic -->
+
+<!-- Commit 13: chore: clean up unused files -->
