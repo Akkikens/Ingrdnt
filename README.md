@@ -485,3 +485,5 @@ Made with ❤️ for healthier living
 <!-- Commit 1: chore: update project dependencies -->
 
 <!-- Commit 2: docs: improve code documentation -->
+
+<!-- Commit 3: refactor: optimize code structure -->
