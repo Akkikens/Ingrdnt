@@ -495,3 +495,5 @@ Made with ❤️ for healthier living
 <!-- Commit 6: feat: add new feature -->
 
 <!-- Commit 7: fix: resolve bug issue -->
+
+<!-- Commit 8: perf: improve performance -->
