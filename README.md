@@ -503,3 +503,5 @@ Made with ❤️ for healthier living
 <!-- Commit 10: build: update build scripts -->
 
 <!-- Commit 11: docs: update API documentation -->
+
+<!-- Commit 12: refactor: simplify code logic -->
